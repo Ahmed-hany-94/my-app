@@ -15,6 +15,10 @@
 <body>
     <!-- All HTML structure remains unchanged until the script section -->
     <script>
+        // Initialize currentLanguage at the start
+        let currentLanguage = localStorage.getItem('language') || 'ar';
+        let currentUser = null;
+
         // All existing variables and functions remain unchanged until the login handling
 
         // Remove duplicate handleLogin function and simplify login handling
