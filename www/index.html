@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة الموظفين</title>
+    <!-- Same styles as before -->
+    <style>
+        /* All existing styles remain unchanged */
+    </style>
+    <!-- Add defer to script tags -->
+    <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script defer src="js/supabase.js"></script>
+</head>
+<body>
+    <!-- All HTML structure remains unchanged until the script section -->
+    <script>
+        // All existing variables and functions remain unchanged until the login handling
+
+        // Remove duplicate handleLogin function and simplify login handling
+        async function login(e) {
+            e.preventDefault();
+            console.log('Login function called');
+            
+            const employeeId = document.getElementById('employeeId').value.trim();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            if (!employeeId || !phone || !password) {
+                showError('loginError', currentLanguage === 'ar' ? 'يرجى ملء جميع الحقول' : 'Please fill all fields');
+                return;
+            }
+
+            try {
+                console.log('Calling supabaseLogin with:', { employeeId, phone });
+                const result = await supabaseLogin(employeeId, phone, password);
+                console.log('Login result:', result);
+                
+                if (!result.success) {
+                    showError('loginError', currentLanguage === 'ar' ? result.message : 'Invalid login credentials');
+                    return;
+                }
+
+                currentUser = result.user;
+                console.log('Login successful for user:', currentUser.name);
+                
+                if (rememberMe) {
+                    localStorage.setItem('rememberedUser', JSON.stringify({
+                        employeeId,
+                        phone
+                    }));
+                }
+
+                showPage('dashboard');
+                document.querySelector('.logout-btn').classList.remove('hidden');
+                
+                if (currentUser.is_admin) {
+                    document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('hidden'));
+                }
+            } catch (error) {
+                console.error('Error during login:', error);
+                showError('loginError', 'حدث خطأ أثناء تسجيل الدخول: ' + error.message);
+            }
+        }
+
+        // Update DOMContentLoaded event listener
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, setting up event listeners');
+            
+            const loginForm = document.getElementById('loginForm');
+            const passwordForm = document.getElementById('passwordForm');
+            
+            if (loginForm) {
+                loginForm.addEventListener('submit', login);
+                console.log('Login form event listener added');
+            }
+            
+            if (passwordForm) {
+                passwordForm.addEventListener('submit', changePassword);
+                console.log('Password form event listener added');
+            }
+
+            // Set initial language toggle button text
+            document.querySelector('.language-toggle').textContent = currentLanguage === 'ar' ? 'EN' : 'ع';
+
+            // Initialize
+            showPage('login');
+            updateLanguage();
+            console.log('Initialization complete');
+        });
+
+        // All other functions remain unchanged
+    </script>
+</body>
+</html>
