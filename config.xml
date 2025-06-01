@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget
+android-versionCode="1"
+ id="com.example.employeeapp" 
+ version="1.0.0"
+ xmlns="http://www.w3.org/ns/widgets" >
+
+    <name>Employee Management System</name>
+    <description>Employee Management System</description>
+    <author>AhmedAtian</author>
+
+    <preference name="orientation" value="portrait" />
+    <preference name="SplashScreenDelay" value="2000" />
+    <preference name="AutoHideSplashScreen" value="true" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splashTemplate.png" />
+    <preference name="AndroidWindowSplashScreenBackground" value="#000000" />
+
+</widget>
